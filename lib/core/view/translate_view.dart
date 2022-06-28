@@ -1,6 +1,6 @@
-import 'package:dictionary_app/core/model/translate_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:translator/translator.dart';
 import '../cubit/translate_cubit.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/searched_widget.dart';
@@ -17,7 +17,8 @@ class TranslateMainView extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => SearchedWidget(state.words)));
+                  builder: (context) =>
+                      SearchedWidget(state.words, state.translatewords)));
         }
       },
       bloc: cubit,

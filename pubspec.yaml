@@ -42,6 +42,7 @@ dependencies:
   vexana: ^2.8.1
   kartal: ^2.1.0
   audioplayers: ^1.0.1
+  translator: ^0.1.7
 
 dev_dependencies:
   flutter_test:
