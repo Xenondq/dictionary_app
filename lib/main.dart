@@ -1,4 +1,5 @@
 import 'package:dictionary_app/core/service/translate_service.dart';
+import 'package:dictionary_app/core/view/translate_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vexana/vexana.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Dictionary',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
         create: (context) => TranslateCubit(TranslateService(NetworkManager(
             options: BaseOptions(
                 baseUrl: "https://api.dictionaryapi.dev/api/v2/entries/en/")))),
-        child: Scaffold(),
+        child: TranslateMainView(),
       ),
     );
   }

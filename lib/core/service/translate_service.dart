@@ -15,9 +15,12 @@ class TranslateService extends ITranslateService {
   Future<List<TranslateModel>?> fetchAllWords({String? query}) async {
     final String _myPath =
         "https://api.dictionaryapi.dev/api/v2/entries/en/$query";
-    final response = await _networkManager
-        .send<TranslateModel, List<TranslateModel>>(_myPath,
-            parseModel: TranslateModel(), method: RequestType.GET);
+    final response =
+        await _networkManager.send<TranslateModel, List<TranslateModel>?>(
+      _myPath,
+      parseModel: TranslateModel(),
+      method: RequestType.GET,
+    );
     return response.data;
   }
 }

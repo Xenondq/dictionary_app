@@ -3,15 +3,21 @@ import 'package:vexana/vexana.dart';
 part 'translate_model.g.dart';
 
 @JsonSerializable()
-class TranslateModel extends INetworkModel<TranslateModel?> {
+class TranslateModel extends INetworkModel<TranslateModel?>
+     {
   String? word;
   String? phonetic;
   List<Phonetics>? phonetics;
   String? origin;
   List<Meanings>? meanings;
 
-  TranslateModel(
-      {this.word, this.phonetic, this.phonetics, this.origin, this.meanings});
+  TranslateModel({
+    this.word,
+    this.phonetic,
+    this.phonetics,
+    this.origin,
+    this.meanings,
+  });
 
   factory TranslateModel.fromJson(Map<String, dynamic> json) {
     return _$TranslateModelFromJson(json);
@@ -25,6 +31,7 @@ class TranslateModel extends INetworkModel<TranslateModel?> {
   TranslateModel? fromJson(Map<String, dynamic> json) {
     return _$TranslateModelFromJson(json);
   }
+
 }
 
 @JsonSerializable()
