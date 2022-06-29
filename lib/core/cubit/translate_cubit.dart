@@ -12,14 +12,13 @@ class TranslateCubit extends Cubit<TranslateState> {
   final wordQueryController = TextEditingController();
 
   Future getWordSearched() async {
-    emit(WordSearchingState());
     final translator = GoogleTranslator();
     var translate = await translator.translate(wordQueryController.text,
         from: 'en', to: 'tr');
     final words =
         await _translateService.fetchAllWords(query: wordQueryController.text);
     if (words != null) {
-      emit(WordSearchedState(words, translate.text));
+      emit(WordSearchingState(words, translate.text));
     }
   }
 }
@@ -28,11 +27,11 @@ abstract class TranslateState {}
 
 class NoTranslateState extends TranslateState {}
 
-class WordSearchingState extends TranslateState {}
-
-class WordSearchedState extends TranslateState {
+class WordSearchingState extends TranslateState {
   final List<TranslateModel> words;
   final String translatewords;
 
-  WordSearchedState(this.words, this.translatewords);
+  WordSearchingState(this.words, this.translatewords);
 }
+
+class WordSearchedState extends TranslateState {}

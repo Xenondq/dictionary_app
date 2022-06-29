@@ -1,44 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:translator/translator.dart';
 import '../cubit/translate_cubit.dart';
+import '../model/translate_model.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/searched_widget.dart';
 
 class TranslateMainView extends StatelessWidget {
-  TranslateMainView({Key? key}) : super(key: key);
+
+  TranslateMainView({Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<TranslateCubit>();
-    return BlocListener<TranslateCubit, TranslateState>(
-      listener: (context, state) {
-        if (state is WordSearchedState && state.words != null) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SearchedWidget(state.words, state.translatewords)));
-        }
-      },
-      bloc: cubit,
-      child: Scaffold(
+    return BlocBuilder<TranslateCubit, TranslateState>(
+        builder: ((context, state) {
+      return Scaffold(
         appBar: AppBar(),
-        body: cubit.state is WordSearchingState
-            ? LoadingWidget()
-            : Form(
-                child: Column(children: [
-                  TextFormField(
-                    controller: cubit.wordQueryController,
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        cubit.getWordSearched();
-                      },
-                      child: Text("Find")),
-                ]),
-              ),
-      ),
-    );
+        body: Form(
+          child: Column(children: [
+            TextFormField(
+              controller: cubit.wordQueryController,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  cubit.getWordSearched();
+                },
+                child: Text("Find")),
+          ]),
+        ),
+      );
+    }));
   }
 }
