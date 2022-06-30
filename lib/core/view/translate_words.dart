@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'package:dictionary_app/core/widgets/background_gradient.dart';
 import 'package:flutter/material.dart';
-
+import 'package:html_unescape/html_unescape.dart';
+import 'package:translator/translator.dart';
+import 'package:http/http.dart' as http;
 import '../../project/border/project_border.dart';
 import '../../project/padding/project_padding.dart';
 
@@ -15,63 +19,49 @@ const sound = "assets/k_sound.png";
 const String ing = "İngilizce";
 const String turks = "Türkçe";
 double baykusSize = 100;
+String translated = "deneme";
 
 class _TranslateWordState extends State<TranslateWord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 246, 232, 223),
-                  Color.fromARGB(255, 254, 174, 150),
-                  Color.fromARGB(255, 254, 151, 156),
-                  Color.fromARGB(183, 84, 46, 189),
-                ],
-                end: Alignment(1.5, 0.5),
-                begin: Alignment(-1.1, 2),
-                stops: [
-                  0.1,
-                  0.3,
-                  0.5,
-                  0.9,
+        body: containers(
+            widths: MediaQuery.of(context).size.width,
+            heights: MediaQuery.of(context).size.height,
+            childs: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const BaykusPadding.all(),
+                    child: _baykusButton(),
+                  ),
+                  _translateIcon(context),
+                  Padding(
+                    padding: const ManuelPadding.all(),
+                    child: Column(children: [
+                      _ingStackwithContainer(context),
+                      _volumeButtonING(context),
+                    ]),
+                  ),
+                  Column(children: [
+                    _turksStackwithContainer(context),
+                    _volumeButtonTurks(context),
+                  ]),
                 ],
               ),
-            ),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: [
-                Padding(
-                  padding: BaykusPadding.all(),
-                  child: _baykusButton(),
-                ),
-                _translateIcon(context),
-                Padding(
-                  padding: ManuelPadding.all(),
-                  child: Column(children: [
-                    _ingStackwithContainer(context),
-                    _volumeButtonING(context),
-                  ]),
-                ),
-                Column(children: [
-                  _turksStackwithContainer(context),
-                  _volumeButtonTurks(context),
-                ]),
-              ],
             )));
   }
 
-  Container _volumeButtonTurks(BuildContext context) {
-    return Container(
+  SizedBox _volumeButtonTurks(BuildContext context) {
+    return SizedBox(
       width: MediaQuery.of(context).size.width * 0.55,
       height: MediaQuery.of(context).size.width * 0.1,
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.volume_up_outlined)),
+            IconButton(
+                onPressed: () {}, icon: const Icon(Icons.volume_up_outlined)),
             Image.asset(sound),
           ]),
     );
@@ -85,31 +75,62 @@ class _TranslateWordState extends State<TranslateWord> {
           width: MediaQuery.of(context).size.width * 0.5,
           height: MediaQuery.of(context).size.width * 0.15,
           decoration: BoxDecoration(
-              color: Color.fromARGB(255, 152, 138, 185),
+              color: const Color.fromARGB(255, 152, 138, 185),
               borderRadius: TranslateBoxRadius.all()),
         ),
         Container(
           width: MediaQuery.of(context).size.width * 0.30,
           height: MediaQuery.of(context).size.width * 0.20,
           decoration: BoxDecoration(
-              color: Color.fromARGB(255, 152, 138, 185),
+              color: const Color.fromARGB(255, 152, 138, 185),
               borderRadius: TranslateBoxRadius.all()),
-          child: const Align(
-              alignment: Alignment.bottomCenter, child: const Text(turks)),
+          child:
+              const Align(alignment: Alignment.bottomCenter, child: Text(ing)),
+        ),
+        SizedBox(
+          height: 50,
+          width: 180,
+          child: TextField(
+            onChanged: (text) async {
+              const apiKey = "AIzaSyA2XB_TKanFvdEBwPC58zuY-KVUqA0zy6c";
+              const to = 'es';
+              final translation = await text.translate(
+                from: 'auto',
+                to: 'es',
+              );
+              final url = Uri.parse(
+                  "https://translation.googleapis.com/language/translate/v2?q=$text&target=$to&key=$apiKey");
+              final response = await http.post(url);
+              if (response.statusCode == 200) {
+                final body = json.decode(response.body);
+                final translations = body['data']['translations'] as List;
+                final translation = HtmlUnescape()
+                    .convert(translations.first['translatedText']);
+              }
+              setState(() {
+                translated = translation.text;
+              });
+            },
+            maxLines: 1,
+            decoration: const InputDecoration(
+                hintText: "Kelime Giriniz",
+                hintStyle: TextStyle(color: Colors.white)),
+          ),
         ),
       ],
     );
   }
 
-  Container _volumeButtonING(BuildContext context) {
-    return Container(
+  SizedBox _volumeButtonING(BuildContext context) {
+    return SizedBox(
       width: MediaQuery.of(context).size.width * 0.55,
       height: MediaQuery.of(context).size.width * 0.1,
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.volume_up_outlined)),
+            IconButton(
+                onPressed: () {}, icon: const Icon(Icons.volume_up_outlined)),
             Image.asset(sound),
           ]),
     );
@@ -120,12 +141,12 @@ class _TranslateWordState extends State<TranslateWord> {
       alignment: Alignment.topCenter,
       children: [
         Padding(
-          padding: OnlyTop.all(),
+          padding: const OnlyTop.all(),
           child: Container(
             width: MediaQuery.of(context).size.width * 0.5,
             height: MediaQuery.of(context).size.width * 0.15,
             decoration: BoxDecoration(
-                color: Color.fromARGB(255, 152, 138, 185),
+                color: const Color.fromARGB(255, 152, 138, 185),
                 borderRadius: TranslateBoxRadius.all()),
           ),
         ),
@@ -133,9 +154,22 @@ class _TranslateWordState extends State<TranslateWord> {
           width: MediaQuery.of(context).size.width * 0.3,
           height: MediaQuery.of(context).size.width * 0.08,
           decoration: BoxDecoration(
-              color: Color.fromARGB(255, 152, 138, 185),
+              color: const Color.fromARGB(255, 152, 138, 185),
               borderRadius: TranslateBoxRadius.all()),
-          child: const Align(child: const Text(ing)),
+          child: Align(child: Text(translated)),
+        ),
+        const Padding(
+          padding: OnlyTop.all(),
+          child: SizedBox(
+            height: 50,
+            width: 180,
+            child: TextField(
+              maxLines: 1,
+              decoration: InputDecoration(
+                  hintText: "Kelime Giriniz",
+                  hintStyle: TextStyle(color: Colors.white)),
+            ),
+          ),
         ),
       ],
     );

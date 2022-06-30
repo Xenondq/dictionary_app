@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-Container containers(Widget childs, BuildContext context) {
+Container containers(
+    {required Widget childs, required double heights, required double widths}) {
   return Container(
     decoration: const BoxDecoration(
       gradient: LinearGradient(
@@ -20,8 +21,8 @@ Container containers(Widget childs, BuildContext context) {
         ],
       ),
     ),
-    height: MediaQuery.of(context).size.height,
-    width: MediaQuery.of(context).size.width,
+    height: heights,
+    width: widths,
     child: childs,
   );
 }

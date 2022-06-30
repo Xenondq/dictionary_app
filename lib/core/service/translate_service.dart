@@ -1,5 +1,4 @@
 import 'package:dictionary_app/core/model/translate_model.dart';
-import 'package:translator/translator.dart';
 import 'package:vexana/vexana.dart';
 
 abstract class ITranslateService {

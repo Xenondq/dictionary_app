@@ -4,7 +4,7 @@ import '../../project/border/project_border.dart';
 import '../widgets/background_gradient.dart';
 
 class HomeView extends StatefulWidget {
-  HomeView({Key? key}) : super(key: key);
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -31,14 +31,15 @@ class _HomeViewState extends State<HomeView> {
       body: Column(
         children: [
           containers(
-            Stack(
+            widths: MediaQuery.of(context).size.width,
+            heights: MediaQuery.of(context).size.height,
+            childs: Stack(
               children: [
                 _mainContainer(context),
                 _baslatButton(context),
                 _baykusAnimated(context),
               ],
             ),
-            context,
           )
         ],
       ),
@@ -64,16 +65,16 @@ class _HomeViewState extends State<HomeView> {
         duration: const Duration(milliseconds: 500),
         child: Container(
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 152, 138, 185),
+            color: const Color.fromARGB(255, 152, 138, 185),
             borderRadius: ContainerBorderRadius.all(),
           ),
           height: MediaQuery.of(context).size.height / 2,
           width: MediaQuery.of(context).size.width * 0.57,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             _ceviriButton(),
-            SizedBox(height: 10),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             _kelimeAraButton(),
-            SizedBox(height: 10),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             _rastgeleKelimeButton(),
           ]),
         ),
@@ -87,7 +88,7 @@ class _HomeViewState extends State<HomeView> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TranslateWord(),
+              builder: (context) => const TranslateWord(),
             ));
       },
       child: Container(

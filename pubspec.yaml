@@ -43,6 +43,8 @@ dependencies:
   kartal: ^2.1.0
   audioplayers: ^1.0.1
   translator: ^0.1.7
+  http: ^0.13.4
+  html_unescape: ^2.0.0
 
 dev_dependencies:
   flutter_test:

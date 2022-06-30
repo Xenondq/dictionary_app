@@ -13,8 +13,6 @@ class SearchedWidget extends StatefulWidget {
 
 class _SearchedWidgetState extends State<SearchedWidget> {
   AudioPlayer audioPlayer = AudioPlayer();
-  Duration duration = Duration();
-  Duration position = Duration();
   bool playing = false;
 
   @override
@@ -42,7 +40,7 @@ class _SearchedWidgetState extends State<SearchedWidget> {
                       await audioPlayer.play(UrlSource(url));
                     }
                   },
-                  child: Icon(Icons.play_arrow)),
+                  child: const Icon(Icons.play_arrow)),
             );
           }),
     );
