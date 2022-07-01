@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/translate_cubit.dart';
 
 class TranslateMainView extends StatelessWidget {
- const TranslateMainView({Key? key}) : super(key: key);
+  const TranslateMainView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,7 @@ class TranslateMainView extends StatelessWidget {
             TextFormField(
               controller: cubit.wordQueryController,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  cubit.getWordSearched();
-                },
-                child: const Text("Find")),
+            ElevatedButton(onPressed: () {}, child: const Text("Find")),
           ]),
         ),
       );

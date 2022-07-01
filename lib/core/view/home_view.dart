@@ -1,5 +1,8 @@
+import 'package:dictionary_app/core/cubit/translate_cubit.dart';
+import 'package:dictionary_app/core/view/deneme.dart';
 import 'package:dictionary_app/core/view/translate_words.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../project/border/project_border.dart';
 import '../widgets/background_gradient.dart';
 
@@ -12,7 +15,8 @@ class HomeView extends StatefulWidget {
 
 const baykus = "assets/k_logo.png";
 const baslatText = "Başlat";
-const ceviriText = "Çeviri";
+String ceviriText = "Çeviri";
+String hello = "hello";
 const kelimeAraText = "Kelime Ara";
 const rastgeleKelimeText = "Rastgele  Kelimeler";
 double top = 50;
@@ -28,22 +32,71 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          containers(
-            widths: MediaQuery.of(context).size.width,
-            heights: MediaQuery.of(context).size.height,
-            childs: Stack(
-              children: [
-                _mainContainer(context),
-                _baslatButton(context),
-                _baykusAnimated(context),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+        body: Column(
+      children: [
+        containers(
+          widths: MediaQuery.of(context).size.width,
+          heights: MediaQuery.of(context).size.height,
+          childs: Stack(
+            children: [
+              Center(
+                child: AnimatedOpacity(
+                  opacity: isTouched2 ? 1 : 0,
+                  duration: const Duration(milliseconds: 500),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 152, 138, 185),
+                      borderRadius: ContainerBorderRadius.all(),
+                    ),
+                    height: MediaQuery.of(context).size.height / 2,
+                    width: MediaQuery.of(context).size.width * 0.57,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TranslateWord()));
+                            },
+                            child: Container(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.055,
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: ButtonBorderRadius.all()),
+                              child: Align(
+                                child: Text(ceviriText,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.05),
+                          _kelimeAraButton(),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.05),
+                          _rastgeleKelimeButton(),
+                        ]),
+                  ),
+                ),
+              ),
+              _baslatButton(context),
+              _baykusAnimated(context),
+            ],
+          ),
+        )
+      ],
+    ));
   }
 
   Positioned _settingsButton(BuildContext context) {
@@ -56,57 +109,6 @@ class _HomeViewState extends State<HomeView> {
               Icons.settings,
               size: 35,
             )));
-  }
-
-  Center _mainContainer(BuildContext context) {
-    return Center(
-      child: AnimatedOpacity(
-        opacity: isTouched2 ? 1 : 0,
-        duration: const Duration(milliseconds: 500),
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 152, 138, 185),
-            borderRadius: ContainerBorderRadius.all(),
-          ),
-          height: MediaQuery.of(context).size.height / 2,
-          width: MediaQuery.of(context).size.width * 0.57,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            _ceviriButton(),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-            _kelimeAraButton(),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-            _rastgeleKelimeButton(),
-          ]),
-        ),
-      ),
-    );
-  }
-
-  InkWell _ceviriButton() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const TranslateWord(),
-            ));
-      },
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.055,
-        width: MediaQuery.of(context).size.width * 0.35,
-        decoration: BoxDecoration(
-            color: Colors.blue, borderRadius: ButtonBorderRadius.all()),
-        child: const Align(
-          child: Text(ceviriText,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              )),
-        ),
-      ),
-    );
   }
 
   InkWell _kelimeAraButton() {

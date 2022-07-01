@@ -1,5 +1,4 @@
 import 'package:translator/translator.dart';
-
 import '../model/translate_model.dart';
 import '../service/translate_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,15 +10,16 @@ class TranslateCubit extends Cubit<TranslateState> {
 
   final wordQueryController = TextEditingController();
 
-  Future getWordSearched() async {
+  Future getWordSearched({required String text}) async {
     final translator = GoogleTranslator();
-    var translate = await translator.translate(wordQueryController.text,
-        from: 'en', to: 'tr');
-    final words =
-        await _translateService.fetchAllWords(query: wordQueryController.text);
+    var translate = await translator.translate(text, from: 'en', to: 'tr');
+    final words = await _translateService.fetchAllWords(query: text);
     if (words != null) {
       emit(WordSearchingState(words, translate.text));
     }
+  }
+  Future getpage() async {
+    emit(NoTranslateState());
   }
 }
 

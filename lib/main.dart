@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BlocProvider(
+      home: BlocProvider<TranslateCubit>(
         create: (context) => TranslateCubit(TranslateService(NetworkManager(
             options: BaseOptions(
                 baseUrl: "https://api.dictionaryapi.dev/api/v2/entries/en/")))),
