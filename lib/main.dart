@@ -1,3 +1,4 @@
+import 'package:dictionary_app/core/view/translate_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,12 +10,22 @@ import 'core/view/home_view.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+final TranslateCubit _translateCubit = TranslateCubit(TranslateService(
+    NetworkManager(
+        options: BaseOptions(
+            baseUrl: "https://api.dictionaryapi.dev/api/v2/entries/en/"))));
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -25,12 +36,22 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BlocProvider<TranslateCubit>(
-        create: (context) => TranslateCubit(TranslateService(NetworkManager(
-            options: BaseOptions(
-                baseUrl: "https://api.dictionaryapi.dev/api/v2/entries/en/")))),
-        child: HomeView(),
-      ),
+      routes: {
+        '/': (context) => BlocProvider.value(
+              value: _translateCubit,
+              child: HomeView(),
+            ),
+        '/second': (context) => BlocProvider.value(
+              value: _translateCubit,
+              child: TranslateWord(),
+            )
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    _translateCubit.close();
+    super.dispose();
   }
 }

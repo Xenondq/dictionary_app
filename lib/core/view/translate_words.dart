@@ -59,28 +59,24 @@ class _TranslateWordState extends State<TranslateWord> {
                           _turksStackwithContainer(context),
                         ]),
                       ),
-                      Column(children: [
-                        _ingStackwithContainer(context),
-                        ListView.builder(itemBuilder: ((context, index) {
-                          return SizedBox(
+                      Column(
+                        children: [
+                          _ingStackwithContainer(context),
+                          SizedBox(
                               width: MediaQuery.of(context).size.width * 0.55,
                               height: MediaQuery.of(context).size.width * 0.1,
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    BlocBuilder<TranslateCubit, TranslateState>(
-                                      builder: (context, state) {
-                                        return IconButton(
-                                            onPressed: () async {},
-                                            icon: const Icon(
-                                                Icons.volume_up_outlined));
-                                      },
-                                    ),
+                                    IconButton(
+                                        onPressed: () async {},
+                                        icon: const Icon(
+                                            Icons.volume_up_outlined)),
                                     Image.asset(sound),
-                                  ]));
-                        }))
-                      ]),
+                                  ]))
+                        ],
+                      ),
                     ],
                   ),
                 )));

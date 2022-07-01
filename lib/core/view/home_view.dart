@@ -55,10 +55,7 @@ class _HomeViewState extends State<HomeView> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => TranslateWord()));
+                              Navigator.of(context).pushNamed('/second');
                             },
                             child: Container(
                               height:

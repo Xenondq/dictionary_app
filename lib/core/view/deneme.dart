@@ -7,20 +7,15 @@ class TranslateMainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<TranslateCubit>();
-    return BlocBuilder<TranslateCubit, TranslateState>(
-        builder: ((context, state) {
-      return Scaffold(
-        appBar: AppBar(),
-        body: Form(
-          child: Column(children: [
-            TextFormField(
-              controller: cubit.wordQueryController,
-            ),
-            ElevatedButton(onPressed: () {}, child: const Text("Find")),
-          ]),
-        ),
-      );
-    }));
+    return Scaffold(
+      appBar: AppBar(),
+      body: Form(
+        child: Column(children: [
+          TextFormField(
+          ),
+          ElevatedButton(onPressed: () {}, child: const Text("Find")),
+        ]),
+      ),
+    );
   }
 }

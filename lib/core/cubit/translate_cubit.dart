@@ -18,9 +18,6 @@ class TranslateCubit extends Cubit<TranslateState> {
       emit(WordSearchingState(words, translate.text));
     }
   }
-  Future getpage() async {
-    emit(NoTranslateState());
-  }
 }
 
 abstract class TranslateState {}
