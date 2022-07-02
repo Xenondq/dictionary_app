@@ -10,33 +10,30 @@ import 'package:http/http.dart' as http;
 import 'package:translator/translator.dart';
 import '../../project/border/project_border.dart';
 import '../../project/padding/project_padding.dart';
+import 'package:kartal/kartal.dart';
 
 class TranslateWord extends StatefulWidget {
-  final List<TranslateModel>? words;
-  final List<Translation>? translation;
-  const TranslateWord({Key? key, this.words, this.translation})
-      : super(key: key);
+  const TranslateWord({Key? key}) : super(key: key);
 
   @override
   State<TranslateWord> createState() => _TranslateWordState();
 }
 
+const arkaplan = "assets/arkaplan.jpg";
 const baykus = "assets/k_logo.png";
 const sound = "assets/k_sound.png";
+const changes = "assets/k_change.png";
 const String ing = "İngilizce";
 const String turks = "Türkçe";
 double baykusSize = 100;
-String translated = "";
+String? translatedturks;
+String? translateding;
 AudioPlayer audioPlayer = AudioPlayer();
 bool playing = false;
+bool isChange = false;
+final fieldText = TextEditingController();
 
 class _TranslateWordState extends State<TranslateWord> {
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TranslateCubit, TranslateState>(
@@ -57,25 +54,18 @@ class _TranslateWordState extends State<TranslateWord> {
                         padding: const ManuelPadding.all(),
                         child: Column(children: [
                           _turksStackwithContainer(context),
+                          _turksVolumeButton(context),
+                          _changeButton(),
                         ]),
                       ),
-                      Column(
-                        children: [
-                          _ingStackwithContainer(context),
-                          SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.55,
-                              height: MediaQuery.of(context).size.width * 0.1,
-                              child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () async {},
-                                        icon: const Icon(
-                                            Icons.volume_up_outlined)),
-                                    Image.asset(sound),
-                                  ]))
-                        ],
+                      Padding(
+                        padding: ManuelPadding.all(),
+                        child: Column(
+                          children: [
+                            _ingStackwithContainer(context),
+                            _ingVolumeButton(context)
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -84,7 +74,53 @@ class _TranslateWordState extends State<TranslateWord> {
     );
   }
 
-  Stack _turksStackwithContainer(BuildContext context) {
+  InkWell _changeButton() {
+    return InkWell(
+        onTap: () {
+          setState(() {
+            isChange = !isChange;
+
+            fieldText.clear();
+            translateding = "";
+            translatedturks = "";
+          });
+        },
+        child: Image.asset(changes));
+  }
+
+  SizedBox _turksVolumeButton(BuildContext context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width * 0.55,
+        height: MediaQuery.of(context).size.width * 0.1,
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                  onPressed: () async {},
+                  icon: const Icon(Icons.volume_up_outlined,
+                      color: Colors.white)),
+              Image.asset(sound),
+            ]));
+  }
+
+  SizedBox _ingVolumeButton(BuildContext context) {
+    return SizedBox(
+        width: MediaQuery.of(context).size.width * 0.55,
+        height: MediaQuery.of(context).size.width * 0.1,
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                  onPressed: () async {},
+                  icon: const Icon(Icons.volume_up_outlined,
+                      color: Colors.white)),
+              Image.asset(sound),
+            ]));
+  }
+
+  Stack _ingStackwithContainer(BuildContext context) {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -101,44 +137,29 @@ class _TranslateWordState extends State<TranslateWord> {
           decoration: BoxDecoration(
               color: const Color.fromARGB(255, 152, 138, 185),
               borderRadius: TranslateBoxRadius.all()),
-          child: const Align(
-              alignment: Alignment.bottomCenter, child: Text(turks)),
-        ),
-        SizedBox(
-          height: 50,
-          width: 180,
-          child: TextField(
-            onChanged: (text) async {
-              const apiKey = "";
-              const to = 'en';
-              final translation = await text.translate(
-                from: 'tr',
-                to: 'en',
-              );
-              final url = Uri.parse(
-                  "https://translation.googleapis.com/language/translate/v2?q=$text&target=$to&key=$apiKey");
-              final response = await http.post(url);
-              if (response.statusCode == 200) {
-                final body = json.decode(response.body);
-                final translations = body['data']['translations'] as List;
-                final translation = HtmlUnescape()
-                    .convert(translations.first['translatedText']);
-              }
-              setState(() {
-                translated = translation.text;
-              });
-            },
-            maxLines: 1,
-            decoration: const InputDecoration(
-                hintText: "Kelime Giriniz",
-                hintStyle: TextStyle(color: Colors.white)),
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 4.0),
+            child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(
+                  isChange ? turks : ing,
+                  style: TextStyle(color: Colors.white),
+                )),
           ),
         ),
+        Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: 150,
+            child: Text(
+              translateding ?? "",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            )),
       ],
     );
   }
 
-  Stack _ingStackwithContainer(BuildContext context) {
+  Stack _turksStackwithContainer(BuildContext context) {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -160,17 +181,51 @@ class _TranslateWordState extends State<TranslateWord> {
               borderRadius: TranslateBoxRadius.all()),
           child: Align(
               child: Text(
-            ing,
+            isChange ? ing : turks,
             style: TextStyle(color: Theme.of(context).canvasColor),
           )),
         ),
-        Positioned(
-            bottom: MediaQuery.of(context).size.height * 0.04,
-            child: Text(
-              translated,
-              style:
-                  TextStyle(color: Theme.of(context).canvasColor, fontSize: 20),
-            )),
+        Padding(
+          padding: EdgeInsets.only(top: 25),
+          child: Container(
+            height: 50,
+            width: 180,
+            child: SizedBox(
+              height: 50,
+              width: 180,
+              child: TextField(
+                controller: fieldText,
+                style: TextStyle(color: Colors.white),
+                onChanged: (text) async {
+                  const apiKey = "";
+                  final to = isChange ? 'tr' : 'en';
+                  final from = isChange ? 'en' : 'tr';
+                  final translation = await text.translate(
+                    from: from,
+                    to: to,
+                  );
+                  final url = Uri.parse(
+                      "https://translation.googleapis.com/language/translate/v2?q=$text&target=$to&key=$apiKey");
+                  final response = await http.post(url);
+                  if (response.statusCode == 200) {
+                    final body = json.decode(response.body);
+                    final translations = body['data']['translations'] as List;
+                    final translation = HtmlUnescape()
+                        .convert(translations.first['translatedText']);
+                  }
+                  setState(() {
+                    translateding = translation.text;
+                  });
+                },
+                maxLines: 1,
+                decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Kelime Giriniz",
+                    hintStyle: TextStyle(color: Colors.white)),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -188,6 +243,7 @@ class _TranslateWordState extends State<TranslateWord> {
         onTap: () {
           Navigator.pop(context);
         },
-        child: Image.asset(baykus, width: baykusSize));
+        child: Image.asset(baykus,
+            width: context.isKeyBoardOpen ? 50 : baykusSize));
   }
 }

@@ -9,5 +9,5 @@ class ContainerBorderRadius extends BorderRadius {
 }
 
 class TranslateBoxRadius extends BorderRadius {
-  TranslateBoxRadius.all() : super.circular(20);
+  TranslateBoxRadius.all() : super.circular(14);
 }

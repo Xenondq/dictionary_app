@@ -10,10 +10,12 @@ class TranslateCubit extends Cubit<TranslateState> {
 
   final wordQueryController = TextEditingController();
 
-  Future getWordSearched({required String text}) async {
+  Future getWordSearched() async {
     final translator = GoogleTranslator();
-    var translate = await translator.translate(text, from: 'en', to: 'tr');
-    final words = await _translateService.fetchAllWords(query: text);
+    var translate = await translator.translate(wordQueryController.text,
+        from: 'en', to: 'tr');
+    final words =
+        await _translateService.fetchAllWords(query: wordQueryController.text);
     if (words != null) {
       emit(WordSearchingState(words, translate.text));
     }
