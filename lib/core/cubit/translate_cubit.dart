@@ -11,6 +11,7 @@ class TranslateCubit extends Cubit<TranslateState> {
   final wordQueryController = TextEditingController();
 
   Future getWordSearched() async {
+    emit(LoadingState());
     final translator = GoogleTranslator();
     var translate = await translator.translate(wordQueryController.text,
         from: 'en', to: 'tr');
@@ -26,11 +27,11 @@ abstract class TranslateState {}
 
 class NoTranslateState extends TranslateState {}
 
+class LoadingState extends TranslateState {}
+
 class WordSearchingState extends TranslateState {
   final List<TranslateModel> words;
   final String translatewords;
 
   WordSearchingState(this.words, this.translatewords);
 }
-
-class WordSearchedState extends TranslateState {}

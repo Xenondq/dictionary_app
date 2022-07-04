@@ -1,11 +1,12 @@
-import 'package:dictionary_app/core/view/translate_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vexana/vexana.dart';
 import 'core/cubit/translate_cubit.dart';
 import 'core/service/translate_service.dart';
+import 'core/view/find_words_view.dart';
 import 'core/view/home_view.dart';
+import 'core/view/translate_words_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,13 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Dictionary',
       theme: ThemeData(
+        textTheme: const TextTheme(
+          bodyText2: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 88, 90, 149),
+          ),
+        ),
         primarySwatch: Colors.blue,
       ),
       routes: {
@@ -44,7 +52,11 @@ class _MyAppState extends State<MyApp> {
         '/second': (context) => BlocProvider.value(
               value: _translateCubit,
               child: TranslateWord(),
-            )
+            ),
+        '/third': (context) => BlocProvider.value(
+              value: _translateCubit,
+              child: FindWordsView(),
+            ),
       },
     );
   }

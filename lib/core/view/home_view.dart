@@ -1,9 +1,6 @@
-import 'package:dictionary_app/core/cubit/translate_cubit.dart';
-import 'package:dictionary_app/core/view/deneme.dart';
-import 'package:dictionary_app/core/view/translate_words.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../project/border/project_border.dart';
+import '../../project/const/project_const.dart';
 import '../widgets/background_gradient.dart';
 
 class HomeView extends StatefulWidget {
@@ -13,12 +10,8 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-const baykus = "assets/k_logo.png";
-const baslatText = "Başlat";
 String ceviriText = "Çeviri";
 String hello = "hello";
-const kelimeAraText = "Kelime Ara";
-const rastgeleKelimeText = "Rastgele  Kelimeler";
 double top = 50;
 double size = 200;
 bool isTouched = false;
@@ -32,68 +25,65 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        containers(
-          widths: MediaQuery.of(context).size.width,
-          heights: MediaQuery.of(context).size.height,
-          childs: Stack(
-            children: [
-              Center(
-                child: AnimatedOpacity(
-                  opacity: isTouched2 ? 1 : 0,
-                  duration: const Duration(milliseconds: 500),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 152, 138, 185),
-                      borderRadius: ContainerBorderRadius.all(),
-                    ),
-                    height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.width * 0.57,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/second');
-                            },
-                            child: Container(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.055,
-                              width: MediaQuery.of(context).size.width * 0.35,
-                              decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: ButtonBorderRadius.all()),
-                              child: Align(
-                                child: Text(ceviriText,
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.05),
-                          _kelimeAraButton(),
-                          SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.05),
-                          _rastgeleKelimeButton(),
-                        ]),
-                  ),
-                ),
-              ),
-              _baslatButton(context),
-              _baykusAnimated(context),
-            ],
+        body: containers(
+      widths: MediaQuery.of(context).size.width,
+      heights: MediaQuery.of(context).size.height,
+      childs: Stack(
+        children: [
+          Center(
+            child: AnimatedOpacity(
+              opacity: isTouched2 ? 1 : 0,
+              duration: const Duration(milliseconds: 500),
+              child: _mainContainer(context),
+            ),
           ),
-        )
-      ],
+          _baslatButton(context),
+          _baykusAnimated(context),
+        ],
+      ),
     ));
+  }
+
+  Container _mainContainer(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 110, 112, 168),
+        borderRadius: ContainerBorderRadius.all(),
+      ),
+      height: MediaQuery.of(context).size.height / 2,
+      width: MediaQuery.of(context).size.width * 0.57,
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        _ceviriButton(context),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+        _kelimeAraButton(),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+        _testcozButton(),
+      ]),
+    );
+  }
+
+  InkWell _ceviriButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed('/second');
+      },
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.055,
+        width: MediaQuery.of(context).size.width * 0.35,
+        decoration: BoxDecoration(
+            color: Color.fromARGB(255, 145, 128, 185),
+            borderRadius: ButtonBorderRadius.all()),
+        child: Align(
+          child: Text(ceviriText,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              )),
+        ),
+      ),
+    );
   }
 
   Positioned _settingsButton(BuildContext context) {
@@ -110,15 +100,18 @@ class _HomeViewState extends State<HomeView> {
 
   InkWell _kelimeAraButton() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed('/third');
+      },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.055,
         width: MediaQuery.of(context).size.width * 0.35,
         decoration: BoxDecoration(
-            color: Colors.blue, borderRadius: ButtonBorderRadius.all()),
-        child: const Align(
-          child: Text(kelimeAraText,
-              style: TextStyle(
+            color: Color.fromARGB(255, 145, 128, 185),
+            borderRadius: ButtonBorderRadius.all()),
+        child: Align(
+          child: Text(ProjectConst().kelimeAraText,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -128,21 +121,23 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  InkWell _rastgeleKelimeButton() {
+  InkWell _testcozButton() {
     return InkWell(
       onTap: () {},
       child: Container(
         height: MediaQuery.of(context).size.height * 0.055,
         width: MediaQuery.of(context).size.width * 0.35,
         decoration: BoxDecoration(
-            color: Colors.blue, borderRadius: ButtonBorderRadius.all()),
-        child: const Text(rastgeleKelimeText,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            )),
+            color: Color.fromARGB(255, 145, 128, 185),
+            borderRadius: ButtonBorderRadius.all()),
+        child: Align(
+          child: Text(ProjectConst().rastgeleKelimeText,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              )),
+        ),
       ),
     );
   }
@@ -156,10 +151,11 @@ class _HomeViewState extends State<HomeView> {
         opacity: isTouched ? kOpacityOne : kOpacityZero,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
+              primary: Color.fromARGB(255, 145, 128, 185),
               shape: RoundedRectangleBorder(
                   borderRadius: ButtonBorderRadius.all())),
           child: Text(
-            baslatText,
+            ProjectConst().baslatText,
             style: TextStyle(fontSize: textFontsize),
           ),
           onPressed: () {
@@ -194,7 +190,7 @@ class _HomeViewState extends State<HomeView> {
             child: AnimatedSize(
                 duration: const Duration(milliseconds: 500),
                 child: Image.asset(
-                  baykus,
+                  ProjectConst().baykus,
                   width: size,
                 ))));
   }

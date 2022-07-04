@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:dictionary_app/core/cubit/translate_cubit.dart';
-import 'package:dictionary_app/core/model/translate_model.dart';
 import 'package:dictionary_app/core/widgets/background_gradient.dart';
+import 'package:dictionary_app/project/const/project_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:html_unescape/html_unescape.dart';
@@ -19,12 +19,6 @@ class TranslateWord extends StatefulWidget {
   State<TranslateWord> createState() => _TranslateWordState();
 }
 
-const arkaplan = "assets/arkaplan.jpg";
-const baykus = "assets/k_logo.png";
-const sound = "assets/k_sound.png";
-const changes = "assets/k_change.png";
-const String ing = "İngilizce";
-const String turks = "Türkçe";
 double baykusSize = 100;
 String? translatedturks;
 String? translateding;
@@ -79,13 +73,12 @@ class _TranslateWordState extends State<TranslateWord> {
         onTap: () {
           setState(() {
             isChange = !isChange;
-
             fieldText.clear();
             translateding = "";
             translatedturks = "";
           });
         },
-        child: Image.asset(changes));
+        child: Image.asset(ProjectConst().changes));
   }
 
   SizedBox _turksVolumeButton(BuildContext context) {
@@ -100,7 +93,7 @@ class _TranslateWordState extends State<TranslateWord> {
                   onPressed: () async {},
                   icon: const Icon(Icons.volume_up_outlined,
                       color: Colors.white)),
-              Image.asset(sound),
+              Image.asset(ProjectConst().sound),
             ]));
   }
 
@@ -116,7 +109,7 @@ class _TranslateWordState extends State<TranslateWord> {
                   onPressed: () async {},
                   icon: const Icon(Icons.volume_up_outlined,
                       color: Colors.white)),
-              Image.asset(sound),
+              Image.asset(ProjectConst().sound),
             ]));
   }
 
@@ -142,7 +135,7 @@ class _TranslateWordState extends State<TranslateWord> {
             child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
-                  isChange ? turks : ing,
+                  isChange ? ProjectConst().turks : ProjectConst().ing,
                   style: TextStyle(color: Colors.white),
                 )),
           ),
@@ -181,7 +174,7 @@ class _TranslateWordState extends State<TranslateWord> {
               borderRadius: TranslateBoxRadius.all()),
           child: Align(
               child: Text(
-            isChange ? ing : turks,
+            isChange ? ProjectConst().ing : ProjectConst().turks,
             style: TextStyle(color: Theme.of(context).canvasColor),
           )),
         ),
@@ -197,25 +190,30 @@ class _TranslateWordState extends State<TranslateWord> {
                 controller: fieldText,
                 style: TextStyle(color: Colors.white),
                 onChanged: (text) async {
-                  const apiKey = "";
-                  final to = isChange ? 'tr' : 'en';
-                  final from = isChange ? 'en' : 'tr';
-                  final translation = await text.translate(
-                    from: from,
-                    to: to,
-                  );
-                  final url = Uri.parse(
-                      "https://translation.googleapis.com/language/translate/v2?q=$text&target=$to&key=$apiKey");
-                  final response = await http.post(url);
-                  if (response.statusCode == 200) {
-                    final body = json.decode(response.body);
-                    final translations = body['data']['translations'] as List;
-                    final translation = HtmlUnescape()
-                        .convert(translations.first['translatedText']);
+                  if (fieldText.text.isNotEmpty) {
+                    const apiKey = "";
+                    final to = isChange ? 'tr' : 'en';
+                    final from = isChange ? 'en' : 'tr';
+                    final translation = await fieldText.text.translate(
+                      from: from,
+                      to: to,
+                    );
+                    final url = Uri.parse(
+                        "https://translation.googleapis.com/language/translate/v2?q=$text&target=$to&key=$apiKey");
+                    final response = await http.post(url);
+                    if (response.statusCode == 200) {
+                      final body = json.decode(response.body);
+                      final translations = body['data']['translations'] as List;
+                      final translation = HtmlUnescape()
+                          .convert(translations.first['translatedText']);
+                    }
+                    setState(() {
+                      translateding = translation.text;
+                      if (fieldText.text.isEmpty) {
+                        translateding = "";
+                      }
+                    });
                   }
-                  setState(() {
-                    translateding = translation.text;
-                  });
                 },
                 maxLines: 1,
                 decoration: const InputDecoration(
@@ -243,7 +241,7 @@ class _TranslateWordState extends State<TranslateWord> {
         onTap: () {
           Navigator.pop(context);
         },
-        child: Image.asset(baykus,
+        child: Image.asset(ProjectConst().baykus,
             width: context.isKeyBoardOpen ? 50 : baykusSize));
   }
 }

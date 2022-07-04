@@ -11,7 +11,7 @@ void main() {
                 "https://translation.googleapis.com/language/translate/v2?q=hello&target=tr&key=")));
   });
 
-  test('Sample TEst', () async {
+  test('Live Translate Test', () async {
     final response = await translateService.translateServices();
 
     expect(response, isNotEmpty);
