@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../project/border/project_border.dart';
 import '../../project/const/project_const.dart';
-import '../widgets/background_gradient.dart';
+import '../widgets/background_image.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -39,6 +39,7 @@ class _HomeViewState extends State<HomeView> {
           ),
           _baslatButton(context),
           _baykusAnimated(context),
+          isTouched2 ? _settingsButton(context) : const SizedBox(),
         ],
       ),
     ));
@@ -47,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
   Container _mainContainer(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 110, 112, 168),
+        color: const Color.fromARGB(255, 110, 112, 168),
         borderRadius: ContainerBorderRadius.all(),
       ),
       height: MediaQuery.of(context).size.height / 2,
@@ -71,7 +72,7 @@ class _HomeViewState extends State<HomeView> {
         height: MediaQuery.of(context).size.height * 0.055,
         width: MediaQuery.of(context).size.width * 0.35,
         decoration: BoxDecoration(
-            color: Color.fromARGB(255, 145, 128, 185),
+            color: const Color.fromARGB(255, 145, 128, 185),
             borderRadius: ButtonBorderRadius.all()),
         child: Align(
           child: Text(ceviriText,
@@ -91,10 +92,13 @@ class _HomeViewState extends State<HomeView> {
         right: MediaQuery.of(context).size.width * 0.02,
         bottom: MediaQuery.of(context).size.height * 0.01,
         child: IconButton(
-            onPressed: () {},
-            icon: const Icon(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/settings');
+            },
+            icon: Icon(
               Icons.settings,
               size: 35,
+              color: Theme.of(context).canvasColor,
             )));
   }
 
@@ -107,7 +111,7 @@ class _HomeViewState extends State<HomeView> {
         height: MediaQuery.of(context).size.height * 0.055,
         width: MediaQuery.of(context).size.width * 0.35,
         decoration: BoxDecoration(
-            color: Color.fromARGB(255, 145, 128, 185),
+            color: const Color.fromARGB(255, 145, 128, 185),
             borderRadius: ButtonBorderRadius.all()),
         child: Align(
           child: Text(ProjectConst().kelimeAraText,
@@ -128,7 +132,7 @@ class _HomeViewState extends State<HomeView> {
         height: MediaQuery.of(context).size.height * 0.055,
         width: MediaQuery.of(context).size.width * 0.35,
         decoration: BoxDecoration(
-            color: Color.fromARGB(255, 145, 128, 185),
+            color: const Color.fromARGB(255, 145, 128, 185),
             borderRadius: ButtonBorderRadius.all()),
         child: Align(
           child: Text(ProjectConst().rastgeleKelimeText,
@@ -151,7 +155,7 @@ class _HomeViewState extends State<HomeView> {
         opacity: isTouched ? kOpacityOne : kOpacityZero,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Color.fromARGB(255, 145, 128, 185),
+              primary: const Color.fromARGB(255, 145, 128, 185),
               shape: RoundedRectangleBorder(
                   borderRadius: ButtonBorderRadius.all())),
           child: Text(

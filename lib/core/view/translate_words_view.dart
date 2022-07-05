@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:dictionary_app/core/cubit/translate_cubit.dart';
-import 'package:dictionary_app/core/widgets/background_gradient.dart';
+import 'package:dictionary_app/core/widgets/background_image.dart';
 import 'package:dictionary_app/project/const/project_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +53,7 @@ class _TranslateWordState extends State<TranslateWord> {
                         ]),
                       ),
                       Padding(
-                        padding: ManuelPadding.all(),
+                        padding: const ManuelPadding.all(),
                         child: Column(
                           children: [
                             _ingStackwithContainer(context),
@@ -131,12 +131,12 @@ class _TranslateWordState extends State<TranslateWord> {
               color: const Color.fromARGB(255, 152, 138, 185),
               borderRadius: TranslateBoxRadius.all()),
           child: Padding(
-            padding: EdgeInsets.only(bottom: 4.0),
+            padding: const EdgeInsets.only(bottom: 4.0),
             child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Text(
                   isChange ? ProjectConst().turks : ProjectConst().ing,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 )),
           ),
         ),
@@ -146,7 +146,7 @@ class _TranslateWordState extends State<TranslateWord> {
             width: 150,
             child: Text(
               translateding ?? "",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: const TextStyle(color: Colors.white, fontSize: 20),
             )),
       ],
     );
@@ -179,8 +179,8 @@ class _TranslateWordState extends State<TranslateWord> {
           )),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 25),
-          child: Container(
+          padding: const EdgeInsets.only(top: 25),
+          child: SizedBox(
             height: 50,
             width: 180,
             child: SizedBox(
@@ -188,7 +188,7 @@ class _TranslateWordState extends State<TranslateWord> {
               width: 180,
               child: TextField(
                 controller: fieldText,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 onChanged: (text) async {
                   if (fieldText.text.isNotEmpty) {
                     const apiKey = "";

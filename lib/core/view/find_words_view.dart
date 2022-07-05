@@ -1,13 +1,12 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:dictionary_app/core/cubit/translate_cubit.dart';
-import 'package:dictionary_app/core/widgets/background_gradient.dart';
+import 'package:dictionary_app/core/widgets/background_image.dart';
 import 'package:dictionary_app/core/widgets/loading_widget.dart';
 import 'package:dictionary_app/project/border/project_border.dart';
 import 'package:dictionary_app/project/const/project_const.dart';
 import 'package:dictionary_app/project/padding/project_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:translator/translator.dart';
 import '../model/translate_model.dart';
 
 class FindWordsView extends StatefulWidget {
@@ -43,7 +42,7 @@ class _FindWordsViewState extends State<FindWordsView> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: ManuelPadding.all(),
+                      padding: const ManuelPadding.all(),
                       child: _baykusButton(context),
                     ),
                     SizedBox(
@@ -55,14 +54,14 @@ class _FindWordsViewState extends State<FindWordsView> {
                       builder: (context, state) {
                         if (state is WordSearchingState) {
                           return Padding(
-                            padding: OnlyTop.all(),
+                            padding: const OnlyTop.all(),
                             child: Container(
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 height:
                                     MediaQuery.of(context).size.height * 0.72,
                                 decoration: BoxDecoration(
                                     borderRadius: ContainerBorderRadius.all(),
-                                    color: Color.fromARGB(255, 192, 189, 189)),
+                                    color: const Color.fromARGB(255, 192, 189, 189)),
                                 child: ListView.builder(
                                     itemCount: 1,
                                     itemBuilder: ((context, index) {
@@ -122,7 +121,7 @@ class _FindWordsViewState extends State<FindWordsView> {
                                               child: Column(
                                                 children: [
                                                   Text(state.translatewords),
-                                                  Text(""),
+                                                  const Text(""),
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -139,48 +138,48 @@ class _FindWordsViewState extends State<FindWordsView> {
                                             ),
                                           ],
                                         ),
-                                        Container(
+                                        SizedBox(
                                           width: 350,
                                           height: 280,
                                           child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text("Örnekler"),
-                                                SizedBox(height: 5),
+                                                const Text("Örnekler"),
+                                                const SizedBox(height: 5),
                                                 Text(state
                                                     .words[index]
                                                     .meanings![index]
                                                     .partOfSpeech
                                                     .toString()),
-                                                SizedBox(height: 10),
+                                                const SizedBox(height: 10),
                                                 Text(state
                                                         .words[index]
                                                         .meanings?[index]
                                                         .definitions?[index]
                                                         .definition ??
                                                     ""),
-                                                SizedBox(height: 10),
+                                                const SizedBox(height: 10),
                                                 Text(state
                                                         .words[index]
                                                         .meanings?[index]
                                                         .definitions?[index]
                                                         .example ??
                                                     ""),
-                                                SizedBox(height: 10),
+                                                const SizedBox(height: 10),
                                                 Text(state
                                                         .words[index]
                                                         .meanings?[index + 1]
                                                         .partOfSpeech ??
                                                     ""),
-                                                SizedBox(height: 10),
+                                                const SizedBox(height: 10),
                                                 Text(state
                                                         .words[index]
                                                         .meanings?[index + 1]
                                                         .definitions?[index]
                                                         .definition ??
                                                     ""),
-                                                SizedBox(height: 10),
+                                                const SizedBox(height: 10),
                                                 Text(state
                                                         .words[index]
                                                         .meanings?[index + 1]
@@ -199,7 +198,7 @@ class _FindWordsViewState extends State<FindWordsView> {
                             child: LoadingWidget(),
                           );
                         } else {
-                          return SizedBox();
+                          return const SizedBox();
                         }
                       },
                     ),

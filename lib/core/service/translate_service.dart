@@ -29,9 +29,9 @@ class TranslateService extends ITranslateService {
     return response.data;
   }
 
-  Future<Translation?> translateServices(
+  Future<Translation> translateServices(
       {String? text, String? to, String? from}) async {
-    const apiKey = "AIzaSyA2XB_TKanFvdEBwPC58zuY-KVUqA0zy6c";
+    const apiKey = "";
     to = to;
     final translation = await text?.translate(from: from!, to: to!);
     final url = Uri.parse(
@@ -43,6 +43,6 @@ class TranslateService extends ITranslateService {
       final translation =
           HtmlUnescape().convert(translations.first['translatedText']);
     }
-    return translation;
+    return translation!;
   }
 }

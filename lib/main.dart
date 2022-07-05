@@ -1,3 +1,5 @@
+import 'package:dictionary_app/core/view/deneme.dart';
+import 'package:dictionary_app/core/view/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,11 +13,11 @@ import 'core/view/translate_words_view.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -47,15 +49,19 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (context) => BlocProvider.value(
               value: _translateCubit,
-              child: HomeView(),
+              child: const HomeView(),
             ),
         '/second': (context) => BlocProvider.value(
               value: _translateCubit,
-              child: TranslateWord(),
+              child: const TranslateWord(),
             ),
         '/third': (context) => BlocProvider.value(
               value: _translateCubit,
-              child: FindWordsView(),
+              child: const FindWordsView(),
+            ),
+        '/settings': (context) => BlocProvider.value(
+              value: _translateCubit,
+              child: const SettingsView(),
             ),
       },
     );

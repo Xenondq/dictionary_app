@@ -21,6 +21,7 @@ class TranslateCubit extends Cubit<TranslateState> {
       emit(WordSearchingState(words, translate.text));
     }
   }
+
 }
 
 abstract class TranslateState {}
@@ -28,6 +29,7 @@ abstract class TranslateState {}
 class NoTranslateState extends TranslateState {}
 
 class LoadingState extends TranslateState {}
+
 
 class WordSearchingState extends TranslateState {
   final List<TranslateModel> words;
